@@ -14,6 +14,24 @@ This project uses MPI to distribute file-processing work across multiple process
 - Distributed processing
 - Multithreading and synchronization concepts
 
+## Processing Flow
+
+```mermaid
+flowchart LR
+  Input["Large text file"] --> Splitter["Chunk splitter"]
+  Splitter --> Master["MPI master process"]
+  Master --> W1["Worker process 1"]
+  Master --> W2["Worker process 2"]
+  Master --> WN["Worker process N"]
+  Dict["Sentiment dictionary"] --> W1
+  Dict --> W2
+  Dict --> WN
+  W1 --> Reduce["Result aggregation"]
+  W2 --> Reduce
+  WN --> Reduce
+  Reduce --> Output["Counts and sentiment summary"]
+```
+
 ## Key Features
 
 - Splits large text files into processable chunks
@@ -43,4 +61,3 @@ This project uses MPI to distribute file-processing work across multiple process
 mpic++ mpi_file_processor.cpp -o mpi_file_processor
 mpirun -np 4 ./mpi_file_processor
 ```
-
